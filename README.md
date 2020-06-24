@@ -2,4 +2,4 @@
 
 ## Convert Text to Charts (Web App for Data Mining)
 
-[screen](imgs/screenshot.PNG)
+![screen](imgs/screenshot.PNG)
