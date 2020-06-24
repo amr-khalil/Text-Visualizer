@@ -1,0 +1,300 @@
+<!doctype html>
+<html lang="en">
+  <head>
+
+    <title>Text Visualizer</title>
+    <!-- Required meta tags -->
+
+    <!-- Required meta tags -->
+    <meta http-equiv="Content-type" content="text/html; charset=utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+
+    <!-- javascript -->
+    <script
+      src="https://code.jquery.com/jquery-3.5.1.min.js"
+       integrity="sha256-9/aliU8dGd2tb6OSsuzixeV4y/faTqgFtohetphbbj0="
+       crossorigin="anonymous">
+    </script>
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/2.2.4/jquery.min.js"></script>
+    <script src="{{ url_for('static', filename='js/s.js') }}"></script>
+
+
+    <!-- Bootstrap CSS --> 
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.5.0/css/bootstrap.min.css" integrity="sha384-9aIt2nRpC12Uk9gS9baDl411NQApFmC26EwAOH8WgZl5MYYxFfc+NcPb1dKGj7Sk" crossorigin="anonymous">
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/styles.css') }}">
+
+</head> 
+
+<body class="mx-auto">
+  <!--navbar links-->     
+  <nav  class="navbar navbar-expand-lg navbar-dark bg-dark sticky-top">
+     <a style="font-size:25px" class="navbar-brand" href="/">Text Visualizer</a>
+     <a style="font-size: 10px" class="navbar-brand" >English - German - Arabic </a>
+     
+    <button class="navbar-toggler" type="button" data-toggle="collapse" 
+    data-target="#navbarTogglerDemo02" 
+    aria-controls="navbarTogglerDemo02" aria-expanded="false" 
+    aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+    
+
+    <div class="collapse navbar-collapse" id="navbarTogglerDemo02">
+      <ul class="navbar-nav ml-auto mt-2 mt-lg-0">
+        <li class="nav-item">
+          <a class="nav-link" href="https://www.linkedin.com/in/amrk/">linkedin</a>
+        </li>
+        <li class="nav-item">
+          <a class="nav-link" href="https://gist.github.com/amr-khalil">Github</a>
+        </li>
+      </ul>
+    </div>
+  </nav>
+  
+<!--Inputs -->
+
+  <div class="container">  
+   <!--middle section-->
+     
+    <!--Enter URL -->
+  
+    <br><form action="" method=post>
+      <label class="font-weight-bold">Enter Link: ( from wikipedia or any article )</label><br>
+          {% if my_url == None or my_url.strip() == ""  %}
+               <input name="my_url" type=url class="form-control" placeholder="https://en.wikipedia.org/wiki/ABBA/" required="required" ><br/>
+          {% else %}
+               <input name="my_url" type=url class="form-control" value={{my_url}} required="required"><br/>
+          {% endif %}
+   
+    
+         
+    <div> 
+   <!--Enter Title -->
+      <label  class="font-weight-bold" >Title</label><br/>
+     
+          {% if my_title == None %}
+               <input name="my_title" type=text class="form-control" value="H-Bar Chart"><br/>
+          {% else %}
+               <input name="my_title" type=text class="form-control" value= "{{my_title}}"><br/> 
+          {% endif %}
+    </div>  
+    
+    <!--form row 1-->           
+    <div  class="form-row">
+       <div class="col">
+               <!--Enter Wordcloud Style-->
+               <label  class="font-weight-bold" >Wordcloud Style</label><br/>
+               <select class="form-control" id="sel1" name="cmaps">
+                  {% if my_cmap == None %}
+                       <option selected='viridis'>viridis</option>
+                  {% else %}
+                       <option selected={{my_cmap}}>{{my_cmap}}</option> 
+                  {% endif %} 
+                   
+                  {% for c in cmaps %}
+                      <option>{{c}}</option>
+                  {% endfor %}  
+               </select><br/>
+        </div>
+        
+        
+        <div class="col">
+            <!--Enter plot Style-->
+            <label  class="font-weight-bold" >Charts style</label><br/>
+              <select class="form-control" id="sel1" name="styles" >
+                {% if my_style == None %}
+                     <option selected='seaborn'>seaborn</option>
+                {% else %}
+                     <option selected={{my_style}}>{{my_style}}</option> 
+                {% endif %}
+                
+                {% for s in styles %}
+                    <option>{{s}}</option>
+                {% endfor %} 
+              </select><br/>
+        
+       </div>
+   </div> 
+   
+    <!--form row 2-->           
+    <div  class="form-row">
+       <div class="col">
+          <!--Enter Freqeuncy -->
+          <label  class="font-weight-bold"  >Least Frequency ({{my_freq}})</label>
+          
+         <input name="my_freq" class="form-control" type="range" list="tickmarks"  min="5" max="50" step="5" value= "{{my_freq}}">
+
+          <datalist id="tickmarks">
+            <option value= "5" ></option>
+            <option value="10"></option>
+            <option value="15"></option>
+            <option value="20"></option>
+            <option value="25"></option>
+            <option value="30"></option>
+            <option value="35"></option>
+            <option value="40"></option>
+            <option value="45"></option>
+            <option value="50"></option>
+
+          </datalist>
+      </div>
+       
+      <div class="col">      
+        <!--Enter Color -->
+        <label class="font-weight-bold" >Choose Chatrs Color</label>        
+        <input name="my_color" class="form-control"  type="color"  value="{{my_color}}"><br/>
+      </div>
+   </div>   
+         
+     <button class="btn btn-outline-dark" type=submit >Submit</button><br>
+  </form><br/>
+    
+  
+
+  
+  <!--Galary -->   
+<div class="se-pre-con">
+  <h3>Image Gallery</h3>
+  <p>There are 6 Plots</p>
+  
+ <!-- row 1-->
+ <div class="row">
+    <!-- wordcloud -->
+    <div class="col-md-4">
+      <div class="thumbnail">
+        <a href="/wordcloud.png" target="_blank">
+          <img src="/wordcloud.png"
+               style="height:300px; width:300px"
+               class="img-fluid img-thumbnail" 
+               id="loading"
+         >
+         
+          <div class="caption">
+            <p>Wordcloud</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    
+    <!-- barplot_h -->
+    <div class="col-md-4">
+      <div class="thumbnail">
+        <a href="/barplot_h.png" target="_blank">
+          <img src="/barplot_h.png"
+               style="height:300px; width:300px"
+               class="img-fluid img-thumbnail" 
+               id="loading"
+         >
+         
+          <div class="caption">
+            <p>Horizontal Bar-Chart</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+    
+    <!-- barplot -->
+    <div class="col-md-4">
+      <div class="thumbnail">
+        <a href="/barplot.png" target="_blank">
+          <img src="/barplot.png"
+               style="height:300px; width:300px" 
+               class="img-fluid img-thumbnail"
+               id="loading"
+          >
+          <div class="caption">
+            <p>Bar-Chart</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </div>
+
+
+<!-- row 2-->
+ <div class="row">
+ 
+    <!-- lineplot -->
+    <div class="col-md-4">
+      <div class="thumbnail">
+        <a href="/lineplot.png" target="_blank">
+          <img src="/lineplot.png"
+               style="height:300px; width:300px" 
+               class="img-fluid img-thumbnail"
+               id="loading"
+          >
+          <div class="caption">
+            <p>Line-Chart</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    
+    <!-- pieplot -->
+    <div class="col-md-4">
+      <div class="thumbnail">
+        <a href="/pieplot.png" target="_blank">
+          <img src="/pieplot.png"
+               style="height:300px; width:300px" 
+               class="img-fluid img-thumbnail"
+               id="loading"
+          >
+          <div class="caption">
+            <p>Pie-Chart</p>
+          </div>
+        </a>
+      </div>
+    </div>
+    
+    <!-- boxplot -->
+    <div class="col-md-4">
+      <div class="thumbnail">
+        <a href="/boxplot.png" target="_blank">
+          <img src="/boxplot.png"
+               style="height:300px; width:300px" 
+               class="img-thumbnail"
+               id="loading"
+          >
+          <div class="caption">
+            <p>Boxplot</p>
+          </div>
+        </a>
+      </div>
+    </div>
+
+
+  </div>
+
+ </div>
+
+
+   <!--middle section-->
+    
+  
+  
+  
+  </div>
+  
+  <!-- Footer -->
+<footer class="page-footer font-small special-color-dark pt-4">
+
+  <!-- Footer Elements -->
+  <div class="container">
+
+  </div>
+
+  <!-- Copyright -->
+  <div class="footer-copyright text-center py-3">2020 Copyright:
+    <a href="https://github.com/amr-khalil"> @Amr Khalil</a>
+  </div>
+  <!-- Copyright -->
+  
+</footer>
+<!-- Footer -->
+  
+</body>  
+  
+  
+</html>
