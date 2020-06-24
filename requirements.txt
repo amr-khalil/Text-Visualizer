@@ -7,5 +7,5 @@ seaborn
 arabic_reshaper
 wordcloud
 requests
-pip install beautifulsoup4
+beautifulsoup4
 python-bidi
