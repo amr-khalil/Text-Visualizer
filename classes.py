@@ -113,7 +113,7 @@ class Wikipedia:
         text = self.process_text()
         
         # Create and generate a word cloud image:
-        wordcloud = WordCloud(font_path='arial',
+        wordcloud = WordCloud(font_path='static/fonts/arial.ttf',
                               width = 800, height = 800,
                               background_color="white",
                               colormap= cmap, include_numbers=True).generate(text)
